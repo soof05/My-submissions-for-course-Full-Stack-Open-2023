@@ -1,52 +1,62 @@
-import { useState } from 'react'
+const Header = (props) => {
+  return (
+    <div>
+      <h1>{props.coursename}</h1>
+    </div>
+  )
+}
 
-const Display = ({counter}) => <>{counter}</>
+const Content = (props) => {
+  return (
+    <div>
+      <Part part={props.part[0].name} exercise={props.part[0].exercises}/>
+      <Part part={props.part[1].name} exercise={props.part[1].exercises}/>
+      <Part part={props.part[2].name} exercise={props.part[2].exercises}/>
+    </div>
+  )
+}
 
-const Button = ({onClick, text}) => <button onClick={onClick}>{text}</button>
+const Part = (props) => {
+  return (
+    <p>
+      {props.part} {props.exercise}
+    </p>
+  )
+}
 
-const History = (props) => {  
-  if (props.allClicks.length === 0) {
-    return (      
-      <div>        
-        the app is used by pressing the buttons      
-      </div>    
-      )  
-    }  
-    return (
-    <div>      
-      button press history: {props.allClicks.join(' ')}    
-      </div>  
-      )
+const Total = (props) => {
+  const total = props.part[0].exercises + props.part[1].exercises + props.part[2].exercises;
+  return (
+    <p>
+      Number of exercises {total}
+    </p>
+  )
 }
 
 const App = () => {
-
-  const [left, setLeft] = useState(0)
-  const [right, setRight] = useState(0)
-  const [allClicks, setAll] = useState([])
-  const [total, setTotal] = useState(0)
-
-  const handleLeftClick = () => {    
-    setAll(allClicks.concat('L'))
-    const update = left + 1;   
-    setLeft(update)  
-    setTotal(update + right)
-  }
-  const handleRightClick = () => {    
-    setAll(allClicks.concat('R')) 
-    const update = right + 1;   
-    setRight(update)
-    setTotal(update + left)  
+  const course = {
+    name: 'Half Stack application development',
+    parts: [
+      {
+        name: 'Fundamentals of React',
+        exercises: 10
+      },
+      {
+        name: 'Using props to pass data',
+        exercises: 7
+      },
+      {
+        name: 'State of a component',
+        exercises: 14
+      }
+    ]
   }
 
   return (
     <div>
-      <Display counter={left}/>
-      <Button onClick={handleLeftClick} text={'left'}/>
-      <Button onClick={handleRightClick} text={'right'}/>
-      <Display counter={right}/>
-      <History allClicks={allClicks} />
-      <p>Total : {total}</p>
+      <Header coursename={course.name}/>
+      <Content part={course.parts}/>
+      <Total part={course.parts}/>
     </div>
   )
 }
